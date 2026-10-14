@@ -23,10 +23,11 @@ RUN curl -fsSL https://pkgs.tailscale.com/stable/debian/bookworm.noarmor.gpg \
  && rm -rf /var/lib/apt/lists/*
 
  # Override `tailscale` in PATH with a wrapper that uses the real Tailscale container.
- RUN cat >/usr/local/bin/tailscale <<'EOF' && chmod +x /usr/local/bin/tailscale
- #!/bin/sh
- set -eu
- exec docker exec ix-tailscale-tailscale-1 tailscale "$@"
- EOF
+ RUN cat > /usr/local/bin/tailscale <<'EOF'
+#!/bin/sh
+set -eu
+exec docker exec ix-tailscale-tailscale-1 tailscale "$@"
+EOF
+RUN chmod +x /usr/local/bin/tailscale
 
 USER 568:568
